@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         properties = "spring.main.allow-bean-definition-overriding=true" // ★ 오버라이딩 허용
 )
 @TestMethodOrder(OrderAnnotation.class)
-class AccountControllerIT {
+class AccountControllerRealTest {
 
     private static final String ACC_NO = "it-001";
 
