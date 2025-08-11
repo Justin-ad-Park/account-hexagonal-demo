@@ -5,7 +5,6 @@ import com.example.account.application.port.in.DepositUseCase;
 import com.example.account.application.port.in.WithdrawUseCase;
 import com.example.account.application.port.out.LoadAccountPort;
 import com.example.account.application.port.out.SaveAccountPort;
-import com.example.account.domain.service.AccountService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

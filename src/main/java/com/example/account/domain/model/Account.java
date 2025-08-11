@@ -8,8 +8,8 @@ public class Account {
     private long balance;
 
     public Account(String accountNumber, String name, long balance) {
-        this.accountNumber = Objects.requireNonNull(accountNumber);
-        this.name = Objects.requireNonNull(name);
+        this.accountNumber = java.util.Objects.requireNonNull(accountNumber);
+        this.name = java.util.Objects.requireNonNull(name);
         this.balance = balance;
     }
 

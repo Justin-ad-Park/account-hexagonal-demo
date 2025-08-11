@@ -36,8 +36,7 @@ public class FileAccountPersistenceAdapter implements LoadAccountPort, SaveAccou
         Path filePath = basePath.resolve(account.getAccountNumber() + ".txt");
         try {
             Files.createDirectories(basePath);
-            Files.write(filePath,
-                    (account.getName() + "\n" + account.getBalance()).getBytes());
+            Files.write(filePath, (account.getName() + "\n" + account.getBalance()).getBytes());
         } catch (IOException e) {
             throw new RuntimeException("Failed to save account", e);
         }
