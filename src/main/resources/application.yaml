@@ -1,0 +1,26 @@
+# src/main/resources/application.yml
+persistence:
+  type: h2   # file | h2
+
+# 파일 어댑터 기본 경로 (상대경로면 실행 위치 기준)
+account:
+  storage:
+    path: "data"
+
+spring:
+  # H2를 선택했을 때만 아래 datasource를 사용 (자동 구성)
+  datasource:
+    # 파일 기반 H2 (사용자 홈 밑에 account-db)
+    #url: "jdbc:h2:file:${user.home}/test/account-db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=LEGACY"
+    url: jdbc:h2:mem:accounts;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=LEGACY
+    #url: "jdbc:h2:mem:accounts;DB_CLOSE_DELAY=-1"
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  sql:
+    init:
+      mode: always   # schema.sql 자동 실행
+  h2:
+    console:
+      enabled: true  # http://localhost:8080/h2-console
+      path: /h2-console

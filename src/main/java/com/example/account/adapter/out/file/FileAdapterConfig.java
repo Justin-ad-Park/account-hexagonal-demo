@@ -1,7 +1,9 @@
 // src/main/java/com/example/account/adapter/out/file/FileAdapterConfig.java
 package com.example.account.adapter.out.file;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,21 +23,20 @@ import java.nio.file.Paths;
  *   - 스프링 컨테이너를 통해 빈을 가져옴
  *   - 싱글턴 보장(중복 생성 방지)
  */
+
+/**
+ * 기본값은 file. persistence.type=file 일 때만 활성화
+ */
 @Configuration
+@ConditionalOnProperty(name = "persistence.type", havingValue = "file", matchIfMissing = true)
 public class FileAdapterConfig {
 
-    /**
-     * 해당 메서드의 리턴값을 스프링의 빈으로 등록
-     * - 메서드 이름이 빈 이름이 됨
-     * - 이 경우 빈 이름은 "accountsBeanPath", 타입 Path
-     */
     @Bean
     @ConditionalOnMissingBean(Path.class)
-    // 해당 타입의 빈이 아직 컨테이너에 없다면 이 빈을 등록해라.
-    // Path 타입 빈이 없을 때만 "accountsBeanPath" 빈을 등록
-    // 다른 설정/프로필/테스트에서 Path 빈을 제공하면 이 기본값은 비활성화
-    public Path accountsBasePath() {
-        return Paths.get("data");
+    public Path accountsBasePath(
+            @Value("${account.storage.path:data}") String storagePath
+    ) {
+        return Paths.get(storagePath);
     }
 
     @Bean
@@ -43,8 +44,4 @@ public class FileAdapterConfig {
     public FileAccountPersistenceAdapter fileAccountPersistenceAdapter(Path accountsBasePath) {
         return new FileAccountPersistenceAdapter(accountsBasePath);
     }
-
-    // ✅ 아래 두 메서드는 제거하세요 (중복 후보 원인)
-    // @Bean public LoadAccountPort loadAccountPort(FileAccountPersistenceAdapter adapter) { return adapter; }
-    // @Bean public SaveAccountPort saveAccountPort(FileAccountPersistenceAdapter adapter) { return adapter; }
 }
