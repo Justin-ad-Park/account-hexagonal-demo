@@ -41,4 +41,9 @@ public class FileAccountPersistenceAdapter implements LoadAccountPort, SaveAccou
             throw new RuntimeException("Failed to save account", e);
         }
     }
+
+    /**
+     * 테스트 코스에서 반복 테스트가 가능하도록 기존 테스트 파일을 정리할 수 있도록 Path 정보 제공
+      */
+    public Path getBasePath() {return  basePath;}
 }

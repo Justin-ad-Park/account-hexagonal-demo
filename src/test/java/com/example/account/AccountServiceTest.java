@@ -27,24 +27,10 @@ class AccountServiceTest {
     @Autowired DepositUseCase depositUseCase;
     @Autowired WithdrawUseCase withdrawUseCase;
 
-    /* After ver01 */
-//    @TestConfiguration
-//    static class TestBeans {
-//        static final Path TEMP_DIR;
-//        static {
-//            try { TEMP_DIR = Files.createTempDirectory("accounts-it"); }
-//            catch (Exception e) { throw new RuntimeException(e); }
-//        }
-//
-//        // 테스트 Out Port를 임시 디렉터리로 교체
-//        @Bean @Primary
-//        LoadAccountPort testLoadPort() { return new FileAccountPersistenceAdapter(TEMP_DIR); }
-//
-//        @Bean @Primary
-//        SaveAccountPort testSavePort() { return new FileAccountPersistenceAdapter(TEMP_DIR); }
-//    }
 
-    /* After ver02 */
+    /**
+     * FileAccountPersistenceAdapter를 우선순위 높은 Bean으로 주입
+     */
     @TestConfiguration
     static class TestBeans {
         static final Path BASE_DIR = Path.of(System.getProperty("user.home"), "test", "accounts");
@@ -53,7 +39,7 @@ class AccountServiceTest {
             catch (Exception e) { throw new RuntimeException("Failed to create test base dir", e); }
         }
 
-        // ✅ 동일하게 어댑터 하나만 우선순위로 등록
+        // ✅ 우선순위가 높은 Bean을 설정해서 FileAdapterConfig가 아닌 아래를 사용
         @Bean @Primary
         FileAccountPersistenceAdapter testFileAdapter() {
             return new FileAccountPersistenceAdapter(BASE_DIR);

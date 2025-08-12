@@ -1,8 +1,6 @@
 package com.example.account.adapter.in.web;
 
 import com.example.account.adapter.out.file.FileAccountPersistenceAdapter;
-import com.example.account.application.port.out.LoadAccountPort;
-import com.example.account.application.port.out.SaveAccountPort;
 import com.example.account.domain.model.Account;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -10,11 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
+import org.springframework.test.context.TestPropertySource;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,40 +20,27 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class AccountControllerRealTest {
+class AccountControllerRealTestVer2 {
 
     private static final String ACC_NO = "it-001";
 
     @LocalServerPort int port;
-
     @Autowired TestRestTemplate restTemplate;
 
+    // ✅ 실제 주입된 어댑터에서 현재 경로를 조회
+    @Autowired FileAccountPersistenceAdapter fileAdapter;
+
     private String url(String path) { return "http://localhost:" + port + path; }
-
-    /**
-     *  */
-    @TestConfiguration
-    static class TestBeans {
-        static final Path BASE_DIR = Path.of(System.getProperty("user.home"), "test", "accounts");
-        static {
-            try { Files.createDirectories(BASE_DIR); }
-            catch (Exception e) { throw new RuntimeException("Failed to create test base dir", e); }
-        }
-
-        // ✅ 동일하게 어댑터 하나만 우선순위로 등록
-        @Bean @Primary
-        FileAccountPersistenceAdapter testFileAdapter() {
-            return new FileAccountPersistenceAdapter(BASE_DIR);
-        }
-    }
+    private Path baseDir() { return fileAdapter.getBasePath(); } // 기존 테스트를 삭제할 수 있도록 경로(BasePath) 제공
 
     @Test @Order(0)
     void cleanup_existing_account_file_if_any() throws Exception {
-        Path file = TestBeans.BASE_DIR.resolve(ACC_NO + ".txt");
+        Files.createDirectories(baseDir());
+        Path file = baseDir().resolve(ACC_NO + ".txt");
         if (Files.exists(file)) {
-            Path tmp = TestBeans.BASE_DIR.resolve(ACC_NO + ".txt.del");
-            Files.move(file, tmp, StandardCopyOption.REPLACE_EXISTING);
-            Files.deleteIfExists(tmp);
+            Path tmp = baseDir().resolve(ACC_NO + ".txt.del");
+            Files.move(file, tmp, StandardCopyOption.REPLACE_EXISTING); //기존 파일명 변경(백업)
+            //Files.deleteIfExists(tmp);
         }
         assertThat(Files.exists(file)).isFalse();
     }
@@ -74,7 +57,7 @@ class AccountControllerRealTest {
         assertThat(created.getAccountNumber()).isEqualTo(ACC_NO);
         assertThat(created.getName()).isEqualTo("Bob");
         assertThat(created.getBalance()).isEqualTo(1000L);
-        assertThat(Files.exists(TestBeans.BASE_DIR.resolve(ACC_NO + ".txt"))).isTrue();
+        assertThat(Files.exists(baseDir().resolve(ACC_NO + ".txt"))).isTrue();
     }
 
     @Test @Order(2)

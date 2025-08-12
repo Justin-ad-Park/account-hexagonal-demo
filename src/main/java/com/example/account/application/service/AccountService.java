@@ -9,8 +9,11 @@ import com.example.account.domain.model.Account;
 import com.example.account.domain.model.Amount;
 
 /**
- * package-private: 외부 패키지에서 직접 접근 금지.
- * 외부에서는 오직 Port 인터페이스(Create/Deposit/WithdrawUseCase)로만 접근합니다.
+ * [ver02 변경사항]
+ * public class와 생성자를 package-private으로 변경
+ *
+ * - package-private: 외부 패키지에서 직접 접근 금지.
+ * - 외부에서는 오직 Port 인터페이스(Create/Deposit/WithdrawUseCase)로만 접근합니다.
  */
 class AccountService implements CreateAccountUseCase, DepositUseCase, WithdrawUseCase {
 
