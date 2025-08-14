@@ -15,12 +15,5 @@ import javax.sql.DataSource;
 @Configuration
 @ConditionalOnProperty(name = "persistence.type", havingValue = "h2")
 public class H2AdapterConfig {
-
-    @Bean
-    public H2AccountPersistenceAdapter h2AccountPersistenceAdapter(JdbcTemplate jdbcTemplate) {
-        return new H2AccountPersistenceAdapter(jdbcTemplate);
-    }
-
-    // 참고: DataSource, JdbcTemplate는 spring-boot-starter-jdbc가 자동 구성해 줍니다.
-    // (application.yml의 spring.datasource.* 값을 사용)
+    // 별도 Bean 필요 없음 (MyBatis Starter가 SqlSessionFactory/DataSource 연동)
 }

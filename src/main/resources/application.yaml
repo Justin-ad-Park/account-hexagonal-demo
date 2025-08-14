@@ -1,7 +1,7 @@
 # src/main/resources/application.yml
 spring:
   profiles:
-    active: file  # file | h2
+    active: h2  # file | h2
 
 ---
 spring:
@@ -36,3 +36,8 @@ spring:
       path: /h2-console
 persistence:
   type: h2
+mybatis:
+  mapper-locations: classpath*:mappers/**/*.xml     # ★ XML 위치
+  type-aliases-package: com.example.account.domain.model
+  configuration:
+    map-underscore-to-camel-case: true
