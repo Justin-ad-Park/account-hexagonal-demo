@@ -11,9 +11,9 @@ public class Account {
     private long balance;
 
     @JsonCreator
-    public Account(@JsonProperty("accountNumber") String accountNumber,
-                   @JsonProperty("name") String name,
-                   @JsonProperty("balance") long balance) {
+    public Account(String accountNumber,
+                   String name,
+                   long balance) {
         this.accountNumber = Objects.requireNonNull(accountNumber);
         this.name = Objects.requireNonNull(name);
         this.balance = balance;
