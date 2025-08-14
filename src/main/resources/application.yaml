@@ -2,3 +2,37 @@
 spring:
   profiles:
     active: file  # file | h2
+
+---
+spring:
+  config:
+    activate:
+      on-profile: h2
+persistence:
+  type: file   # file | h2
+
+# 파일 어댑터 기본 경로 (상대경로면 실행 위치 기준)
+account:
+  storage:
+    path: "data"
+
+---
+spring:
+  config:
+    activate:
+      on-profile: h2
+  datasource:
+    url: jdbc:h2:mem:accounts;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=LEGACY
+    #url: "jdbc:h2:file:${user.home}/test/account-db;MODE=LEGACY"
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  sql:
+    init:
+      mode: always
+  h2:
+    console:
+      enabled: true  # http://localhost:8080/h2-console
+      path: /h2-console
+persistence:
+  type: h2

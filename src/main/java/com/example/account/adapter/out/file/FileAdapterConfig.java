@@ -26,6 +26,7 @@ import java.nio.file.Paths;
 
 /**
  * 기본값은 file. persistence.type=file 일 때만 활성화
+ * matchIfMissing = true : 프로퍼티가 없을 경우에 이 Configuration을 사용하도록 설정
  */
 @Configuration
 @ConditionalOnProperty(name = "persistence.type", havingValue = "file", matchIfMissing = true)
