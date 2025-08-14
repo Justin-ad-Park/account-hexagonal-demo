@@ -1,13 +1,13 @@
 # src/main/resources/application.yml
 spring:
   profiles:
-    active: h2  # file | h2
+    active: file  # file | h2
 
 ---
 spring:
   config:
     activate:
-      on-profile: h2
+      on-profile: file
 persistence:
   type: file   # file | h2
 

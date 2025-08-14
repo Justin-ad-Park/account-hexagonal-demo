@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,7 +30,8 @@ import java.nio.file.Paths;
  * matchIfMissing = true : 프로퍼티가 없을 경우에 이 Configuration을 사용하도록 설정
  */
 @Configuration
-@ConditionalOnProperty(name = "persistence.type", havingValue = "file", matchIfMissing = true)
+@Profile("file")
+//@ConditionalOnProperty(name = "persistence.type", havingValue = "file", matchIfMissing = true)
 public class FileAdapterConfig {
 
     @Bean

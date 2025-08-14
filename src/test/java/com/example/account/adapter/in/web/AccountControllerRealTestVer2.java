@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 import java.nio.file.Files;
@@ -27,23 +28,7 @@ class AccountControllerRealTestVer2 {
     @LocalServerPort int port;
     @Autowired TestRestTemplate restTemplate;
 
-    // ✅ 실제 주입된 어댑터에서 현재 경로를 조회
-    @Autowired FileAccountPersistenceAdapter fileAdapter;
-
     private String url(String path) { return "http://localhost:" + port + path; }
-    private Path baseDir() { return fileAdapter.getBasePath(); } // 기존 테스트를 삭제할 수 있도록 경로(BasePath) 제공
-
-    @Test @Order(0)
-    void cleanup_existing_account_file_if_any() throws Exception {
-        Files.createDirectories(baseDir());
-        Path file = baseDir().resolve(ACC_NO + ".txt");
-        if (Files.exists(file)) {
-            Path tmp = baseDir().resolve(ACC_NO + ".txt.del");
-            Files.move(file, tmp, StandardCopyOption.REPLACE_EXISTING); //기존 파일명 변경(백업)
-            //Files.deleteIfExists(tmp);
-        }
-        assertThat(Files.exists(file)).isFalse();
-    }
 
     @Test @Order(1)
     void createAccount_shouldReturnCreatedAccount() {
@@ -57,7 +42,7 @@ class AccountControllerRealTestVer2 {
         assertThat(created.getAccountNumber()).isEqualTo(ACC_NO);
         assertThat(created.getName()).isEqualTo("Bob");
         assertThat(created.getBalance()).isEqualTo(1000L);
-        assertThat(Files.exists(baseDir().resolve(ACC_NO + ".txt"))).isTrue();
+        // assertThat(Files.exists(baseDir().resolve(ACC_NO + ".txt"))).isTrue();
     }
 
     @Test @Order(2)

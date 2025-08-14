@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
  * 쿼리는 모두 MyBatis XML로 분리.
  * 어댑터는 Port 구현과 도메인 변환만 담당.
  */
-@Component
 public class H2AccountPersistenceAdapter implements LoadAccountPort, SaveAccountPort {
 
     private final AccountMapper mapper;

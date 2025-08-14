@@ -7,6 +7,10 @@ public class Amount {
         this.value = value;
     }
 
+    public Amount(Long value) {
+        this.value = value != null ? value.longValue() : 0;
+    }
+
     public long getValue() {
         return value;
     }
