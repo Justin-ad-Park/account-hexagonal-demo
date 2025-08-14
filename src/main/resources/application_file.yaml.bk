@@ -1,0 +1,9 @@
+# src/main/resources/application.yml
+persistence:
+  type: file   # file | h2
+
+# 파일 어댑터 기본 경로 (상대경로면 실행 위치 기준)
+account:
+  storage:
+    path: "data"
+

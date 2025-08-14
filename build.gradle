@@ -14,8 +14,14 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // H2 + JDBC
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    runtimeOnly 'com.h2database:h2'
+
+    // mybatis
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
 }
 
 test {

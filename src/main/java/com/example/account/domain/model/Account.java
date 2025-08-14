@@ -13,6 +13,11 @@ public class Account {
         this.balance = balance;
     }
 
+    // ★ MyBatis가 Long을 기대할 때 대응하는 보조 생성자
+    public Account(String accountNumber, String name, Long balance) {
+        this(accountNumber, name, balance != null ? balance.longValue() : 0L);
+    }
+
     public String getAccountNumber() { return accountNumber; }
     public String getName() { return name; }
     public long getBalance() { return balance; }

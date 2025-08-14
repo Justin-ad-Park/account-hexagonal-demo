@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,6 +20,7 @@ import java.nio.file.Path;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@ActiveProfiles("h2")
 class AccountServiceTest {
 
     @Autowired CreateAccountUseCase createAccountUseCase;

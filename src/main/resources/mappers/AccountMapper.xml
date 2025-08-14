@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.account.adapter.out.h2.mapper.AccountMapper">
+
+    <!-- Domain 생성자를 이용해 바로 매핑 -->
+    <resultMap id="AccountResultMap" type="com.example.account.domain.model.Account">
+        <constructor>
+            <arg column="account_number" javaType="java.lang.String"/>
+            <arg column="name"           javaType="java.lang.String"/>
+            <arg column="balance"        javaType="long"/>
+        </constructor>
+    </resultMap>
+
+    <select id="findByAccountNumber" parameterType="string" resultMap="AccountResultMap">
+        SELECT account_number, name, balance
+        FROM account
+        WHERE account_number = #{accountNumber}
+    </select>
+
+    <!-- H2의 MERGE INTO로 upsert 처리 -->
+    <insert id="upsert" parameterType="com.example.account.domain.model.Account">
+        MERGE INTO account (account_number, name, balance) KEY(account_number)
+        VALUES (#{accountNumber}, #{name}, #{balance})
+    </insert>
+</mapper>
