@@ -1,5 +1,6 @@
 package com.example.account.adapter.in.web;
 
+import com.example.account.adapter.in.web.dto.AccountResponse;
 import com.example.account.adapter.out.file.FileAccountPersistenceAdapter;
 import com.example.account.domain.model.Account;
 import org.junit.jupiter.api.MethodOrderer;
@@ -35,14 +36,13 @@ class AccountControllerRealTestVer2 {
         var created = restTemplate.postForEntity(
                 url("/accounts?accountNumber=" + ACC_NO + "&name=Bob&balance=1000"),
                 null,
-                Account.class
+                AccountResponse.class
         ).getBody();
 
         assertThat(created).isNotNull();
         assertThat(created.getAccountNumber()).isEqualTo(ACC_NO);
         assertThat(created.getName()).isEqualTo("Bob");
         assertThat(created.getBalance()).isEqualTo(1000L);
-        // assertThat(Files.exists(baseDir().resolve(ACC_NO + ".txt"))).isTrue();
     }
 
     @Test @Order(2)
@@ -50,7 +50,7 @@ class AccountControllerRealTestVer2 {
         var afterDeposit = restTemplate.postForEntity(
                 url("/accounts/" + ACC_NO + "/deposit?amount=500"),
                 null,
-                Account.class
+                AccountResponse.class
         ).getBody();
         assertThat(afterDeposit).isNotNull();
         assertThat(afterDeposit.getBalance()).isEqualTo(1500L);
@@ -61,7 +61,7 @@ class AccountControllerRealTestVer2 {
         var afterWithdraw = restTemplate.postForEntity(
                 url("/accounts/" + ACC_NO + "/withdraw?amount=300"),
                 null,
-                Account.class
+                AccountResponse.class
         ).getBody();
         assertThat(afterWithdraw).isNotNull();
         assertThat(afterWithdraw.getBalance()).isEqualTo(1200L);

@@ -1,8 +1,5 @@
 package com.example.account.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.Objects;
 
 public class Account {
@@ -10,7 +7,6 @@ public class Account {
     private final String name;
     private long balance;
 
-    @JsonCreator
     public Account(String accountNumber,
                    String name,
                    long balance) {

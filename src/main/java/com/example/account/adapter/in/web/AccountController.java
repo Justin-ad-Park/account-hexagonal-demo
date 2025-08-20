@@ -1,5 +1,6 @@
 package com.example.account.adapter.in.web;
 
+import com.example.account.adapter.in.web.dto.AccountResponse;
 import com.example.account.application.port.in.CreateAccountUseCase;
 import com.example.account.application.port.in.DepositUseCase;
 import com.example.account.application.port.in.WithdrawUseCase;
@@ -24,19 +25,22 @@ public class AccountController {
     }
 
     @PostMapping
-    public Account create(@RequestParam String accountNumber,
-                          @RequestParam String name,
-                          @RequestParam long balance) {
-        return createAccountUseCase.createAccount(accountNumber, name, balance);
+    public AccountResponse create(@RequestParam String accountNumber,
+                                  @RequestParam String name,
+                                  @RequestParam long balance) {
+        var acc = createAccountUseCase.createAccount(accountNumber, name, balance);
+        return AccountResponse.byAccount(acc);
     }
 
     @PostMapping("/{accountNumber}/deposit")
-    public Account deposit(@PathVariable String accountNumber, @RequestParam long amount) {
-        return depositUseCase.deposit(accountNumber, new Amount(amount));
+    public AccountResponse deposit(@PathVariable String accountNumber, @RequestParam long amount) {
+        var acc = depositUseCase.deposit(accountNumber, new Amount(amount));
+        return AccountResponse.byAccount(acc);
     }
 
     @PostMapping("/{accountNumber}/withdraw")
-    public Account withdraw(@PathVariable String accountNumber, @RequestParam long amount) {
-        return withdrawUseCase.withdraw(accountNumber, new Amount(amount));
+    public AccountResponse withdraw(@PathVariable String accountNumber, @RequestParam long amount) {
+        var acc = withdrawUseCase.withdraw(accountNumber, new Amount(amount));
+        return AccountResponse.byAccount(acc);
     }
 }

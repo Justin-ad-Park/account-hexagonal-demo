@@ -1,5 +1,6 @@
 package com.example.account.adapter.in.web;
 
+import com.example.account.adapter.in.web.dto.AccountResponse;
 import com.example.account.adapter.out.file.FileAccountPersistenceAdapter;
 import com.example.account.domain.model.Account;
 import org.junit.jupiter.api.MethodOrderer;
@@ -66,7 +67,7 @@ class AccountControllerRealTest {
         var created = restTemplate.postForEntity(
                 url("/accounts?accountNumber=" + ACC_NO + "&name=Bob&balance=1000"),
                 null,
-                Account.class
+                AccountResponse.class
         ).getBody();
 
         assertThat(created).isNotNull();
@@ -82,7 +83,7 @@ class AccountControllerRealTest {
         var afterDeposit = restTemplate.postForEntity(
                 url("/accounts/" + ACC_NO + "/deposit?amount=500"),
                 null,
-                Account.class
+                AccountResponse.class
         ).getBody();
 
         assertThat(afterDeposit).isNotNull();
@@ -95,7 +96,7 @@ class AccountControllerRealTest {
         var afterWithdraw = restTemplate.postForEntity(
                 url("/accounts/" + ACC_NO + "/withdraw?amount=300"),
                 null,
-                Account.class
+                AccountResponse.class
         ).getBody();
 
         assertThat(afterWithdraw).isNotNull();
