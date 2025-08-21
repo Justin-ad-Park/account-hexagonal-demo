@@ -2,6 +2,7 @@ package com.example.account.adapter.in.web;
 
 import com.example.account.application.port.in.CreateAccountUseCase;
 import com.example.account.application.port.in.DepositUseCase;
+import com.example.account.application.port.in.GetAccountQuery;
 import com.example.account.application.port.in.WithdrawUseCase;
 import com.example.account.domain.model.Account;
 import com.example.account.domain.model.Amount;
@@ -14,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -72,4 +74,20 @@ class AccountControllerMockTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.balance").value(1200));
     }
+
+    @MockBean
+    private GetAccountQuery getAccountQuery;
+
+    @Test
+    void getAccount_shouldReturnAccount() throws Exception {
+        Account account = new Account("123", "Alice", 800L);
+        given(getAccountQuery.getAccount(ArgumentMatchers.eq("123")))
+                .willReturn(account);
+
+        mockMvc.perform(get("/accounts/123"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.balance").value(800));
+    }
+
+
 }

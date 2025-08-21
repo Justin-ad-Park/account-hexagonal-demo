@@ -2,7 +2,6 @@ package com.example.account.adapter.in.web;
 
 import com.example.account.adapter.in.web.dto.AccountResponse;
 import com.example.account.adapter.out.file.FileAccountPersistenceAdapter;
-import com.example.account.domain.model.Account;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -23,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class AccountControllerRealTest {
+class AccountControllerFileTest {
 
     private static final String ACC_NO = "it-001";
 
@@ -44,7 +43,7 @@ class AccountControllerRealTest {
             catch (Exception e) { throw new RuntimeException("Failed to create test base dir", e); }
         }
 
-        // ✅ 동일하게 어댑터 하나만 우선순위로 등록
+        // ✅ 파일 어댑터를 우선순위로 등록
         @Bean @Primary
         FileAccountPersistenceAdapter testFileAdapter() {
             return new FileAccountPersistenceAdapter(BASE_DIR);
@@ -101,5 +100,17 @@ class AccountControllerRealTest {
 
         assertThat(afterWithdraw).isNotNull();
         assertThat(afterWithdraw.getBalance()).isEqualTo(1200L);
+    }
+
+    // 4) 계좌조회
+    @Test @Order(4)
+    void 계좌조회() {
+        var account = restTemplate.getForEntity(
+                url("/accounts/" + ACC_NO),
+                AccountResponse.class
+        ).getBody();
+
+        assertThat(account).isNotNull();
+        assertThat(account.getBalance()).isEqualTo(1200L);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.account;
 
 import com.example.account.adapter.out.file.FileAccountPersistenceAdapter;
+import com.example.account.application.port.in.GetAccountQuery;
 import com.example.account.domain.model.Amount;
 import com.example.account.application.port.in.CreateAccountUseCase;
 import com.example.account.application.port.in.DepositUseCase;
@@ -27,6 +28,7 @@ class AccountServiceTest {
     @Autowired CreateAccountUseCase createAccountUseCase;
     @Autowired DepositUseCase depositUseCase;
     @Autowired WithdrawUseCase withdrawUseCase;
+    @Autowired GetAccountQuery getAccountQuery;
 
 
     @Test
@@ -34,10 +36,16 @@ class AccountServiceTest {
         Account account = createAccountUseCase.createAccount("123", "Alice", 1000L);
         assertEquals(1000L, account.getBalance());
 
+//        account = getAccountQuery.getAccount("123");
+//        assertEquals(1000L, account.getBalance());
+
         account = depositUseCase.deposit("123", new Amount(500));
         assertEquals(1500L, account.getBalance());
 
         account = withdrawUseCase.withdraw("123", new Amount(300));
+        assertEquals(1200L, account.getBalance());
+
+        account = getAccountQuery.getAccount("123");
         assertEquals(1200L, account.getBalance());
     }
 }

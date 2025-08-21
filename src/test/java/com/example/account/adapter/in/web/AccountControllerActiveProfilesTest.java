@@ -1,8 +1,6 @@
 package com.example.account.adapter.in.web;
 
 import com.example.account.adapter.in.web.dto.AccountResponse;
-import com.example.account.adapter.out.file.FileAccountPersistenceAdapter;
-import com.example.account.domain.model.Account;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -12,17 +10,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ActiveProfiles("file")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class AccountControllerRealTestVer2 {
+class AccountControllerActiveProfilesTest {
 
     private static final String ACC_NO = "it-001";
 
@@ -65,5 +59,17 @@ class AccountControllerRealTestVer2 {
         ).getBody();
         assertThat(afterWithdraw).isNotNull();
         assertThat(afterWithdraw.getBalance()).isEqualTo(1200L);
+    }
+
+    // 4) 계좌조회
+    @Test @Order(4)
+    void 계좌조회() {
+        var account = restTemplate.getForEntity(
+                url("/accounts/" + ACC_NO),
+                AccountResponse.class
+        ).getBody();
+
+        assertThat(account).isNotNull();
+        assertThat(account.getBalance()).isEqualTo(1200L);
     }
 }

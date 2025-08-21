@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * 외부에는 Port 타입으로만 빈을 노출합니다.
  */
 @Configuration
-class ApplicationConfig {
+class AccountServiceConfig {
 
     @Bean
     AccountService accountService(LoadAccountPort load, SaveAccountPort save) {
