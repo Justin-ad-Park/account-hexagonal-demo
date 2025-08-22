@@ -1,6 +1,5 @@
-package com.example.account;
+package com.example.account.application.service;
 
-import com.example.account.adapter.out.file.FileAccountPersistenceAdapter;
 import com.example.account.application.port.in.GetAccountQuery;
 import com.example.account.domain.model.Amount;
 import com.example.account.application.port.in.CreateAccountUseCase;
@@ -10,14 +9,7 @@ import com.example.account.domain.model.Account;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
 import org.springframework.test.context.ActiveProfiles;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
