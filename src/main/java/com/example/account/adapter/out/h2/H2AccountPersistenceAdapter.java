@@ -13,7 +13,7 @@ class H2AccountPersistenceAdapter implements LoadAccountPort, SaveAccountPort {
 
     private final AccountMapper mapper;
 
-    public H2AccountPersistenceAdapter(AccountMapper mapper) {
+    H2AccountPersistenceAdapter(AccountMapper mapper) {
         this.mapper = mapper;
     }
 

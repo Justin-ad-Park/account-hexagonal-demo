@@ -5,7 +5,6 @@ import com.example.account.application.port.in.CreateAccountUseCase;
 import com.example.account.application.port.in.DepositUseCase;
 import com.example.account.application.port.in.GetAccountQuery;
 import com.example.account.application.port.in.WithdrawUseCase;
-import com.example.account.domain.model.Account;
 import com.example.account.domain.model.Amount;
 import org.springframework.web.bind.annotation.*;
 
