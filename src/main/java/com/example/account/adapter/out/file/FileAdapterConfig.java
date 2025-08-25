@@ -32,7 +32,7 @@ import java.nio.file.Paths;
 @Configuration
 @Profile("file")
 //@ConditionalOnProperty(name = "persistence.type", havingValue = "file", matchIfMissing = true)
-public class FileAdapterConfig {
+class FileAdapterConfig {
 
     @Bean
     @ConditionalOnMissingBean(Path.class)

@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class GetAccountServiceConfig {
+class GetAccountServiceConfig {
     @Bean
     GetAccountService GetAccountService(LoadAccountPort load) {
         return new GetAccountService(load);

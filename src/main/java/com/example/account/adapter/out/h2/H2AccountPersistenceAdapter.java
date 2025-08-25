@@ -4,13 +4,12 @@ import com.example.account.application.port.out.LoadAccountPort;
 import com.example.account.application.port.out.SaveAccountPort;
 import com.example.account.domain.model.Account;
 import com.example.account.adapter.out.h2.mapper.AccountMapper;
-import org.springframework.stereotype.Component;
 
 /**
  * 쿼리는 모두 MyBatis XML로 분리.
  * 어댑터는 Port 구현과 도메인 변환만 담당.
  */
-public class H2AccountPersistenceAdapter implements LoadAccountPort, SaveAccountPort {
+class H2AccountPersistenceAdapter implements LoadAccountPort, SaveAccountPort {
 
     private final AccountMapper mapper;
 

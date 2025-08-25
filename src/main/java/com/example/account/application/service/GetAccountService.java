@@ -4,7 +4,7 @@ import com.example.account.application.port.in.GetAccountQuery;
 import com.example.account.application.port.out.LoadAccountPort;
 import com.example.account.domain.model.Account;
 
-public class GetAccountService implements GetAccountQuery {
+class GetAccountService implements GetAccountQuery {
 
     private final LoadAccountPort loadAccountPort;
 
