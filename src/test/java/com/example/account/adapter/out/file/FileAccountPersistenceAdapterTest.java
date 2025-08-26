@@ -22,7 +22,7 @@ class FileAccountPersistenceAdapterTest {
 
     @Test @Order(1)
     void save() {
-        Account account = new Account("123", "Alice", 1000L);
+        Account account = Account.of("123", "Alice", 1000L);
         fileAccountPersistenceAdapter.save(account);
     }
 

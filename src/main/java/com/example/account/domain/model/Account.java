@@ -7,29 +7,29 @@ public class Account {
     private final String name;
     private long balance;
 
-    public Account(String accountNumber,
-                   String name,
-                   long balance) {
+    // 생성자는 외부에서 직접 못 쓰게 private
+    private Account(String accountNumber, String name, long balance) {
         this.accountNumber = Objects.requireNonNull(accountNumber);
         this.name = Objects.requireNonNull(name);
         this.balance = balance;
     }
 
-    // ★ MyBatis가 Long을 기대할 때 대응하는 보조 생성자
-    public Account(String accountNumber, String name, Long balance) {
-        this(accountNumber, name, balance != null ? balance.longValue() : 0L);
+    // 영속 어댑터/테스트가 사용할 수 있도록 공개 팩토리 제공
+    public static Account of(String accountNumber, String name, long balance) {
+        return new Account(accountNumber, name, balance);
     }
 
     public String getAccountNumber() { return accountNumber; }
     public String getName() { return name; }
     public long getBalance() { return balance; }
 
-    public void deposit(Amount amount) {
+    // ★ 변경 메서드는 package-private 로 축소(접근 제한자 없음)
+    void deposit(Amount amount) {
         if (amount.getValue() <= 0) throw new IllegalArgumentException("Deposit must be positive");
         balance += amount.getValue();
     }
 
-    public void withdraw(Amount amount) {
+    void withdraw(Amount amount) {
         if (amount.getValue() <= 0) throw new IllegalArgumentException("Withdraw must be positive");
         if (balance < amount.getValue()) throw new IllegalStateException("Insufficient balance");
         balance -= amount.getValue();

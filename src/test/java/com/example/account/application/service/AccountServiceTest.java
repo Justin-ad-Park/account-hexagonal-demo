@@ -1,6 +1,7 @@
 package com.example.account.application.service;
 
 import com.example.account.application.port.in.GetAccountQuery;
+import com.example.account.domain.exception.AccountNotFoundException;
 import com.example.account.domain.model.Amount;
 import com.example.account.application.port.in.CreateAccountUseCase;
 import com.example.account.application.port.in.DepositUseCase;
@@ -44,7 +45,7 @@ class AccountServiceTest {
     @Test
     void getAccount_shouldThrow_whenAccountDoesNotExist() {
         // 없는 계좌를 조회할 때 예외 발생을 검증
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(AccountNotFoundException.class, () -> {
             getAccountQuery.getAccount("noAccount");
         });
     }

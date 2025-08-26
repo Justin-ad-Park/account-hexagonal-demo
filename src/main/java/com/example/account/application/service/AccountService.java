@@ -6,6 +6,7 @@ import com.example.account.application.port.in.WithdrawUseCase;
 import com.example.account.application.port.out.LoadAccountPort;
 import com.example.account.application.port.out.SaveAccountPort;
 import com.example.account.domain.model.Account;
+import com.example.account.domain.model.AccountCommands;
 import com.example.account.domain.model.Amount;
 
 /**
@@ -27,23 +28,23 @@ class AccountService implements CreateAccountUseCase, DepositUseCase, WithdrawUs
 
     @Override
     public Account createAccount(String accountNumber, String name, long initialBalance) {
-        var account = new Account(accountNumber, name, initialBalance);
+        Account account = AccountCommands.create(accountNumber, name, initialBalance);
         saveAccountPort.save(account);
         return account;
     }
 
     @Override
     public Account deposit(String accountNumber, Amount amount) {
-        var account = loadAccountPort.load(accountNumber);
-        account.deposit(amount);
+        Account account = loadAccountPort.load(accountNumber);
+        AccountCommands.deposit(account, amount);
         saveAccountPort.save(account);
         return account;
     }
 
     @Override
     public Account withdraw(String accountNumber, Amount amount) {
-        var account = loadAccountPort.load(accountNumber);
-        account.withdraw(amount);
+        Account account = loadAccountPort.load(accountNumber);
+        AccountCommands.withdraw(account, amount);
         saveAccountPort.save(account);
         return account;
     }

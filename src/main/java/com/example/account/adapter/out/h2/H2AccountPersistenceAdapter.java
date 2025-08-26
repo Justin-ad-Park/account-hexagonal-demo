@@ -1,5 +1,6 @@
 package com.example.account.adapter.out.h2;
 
+import com.example.account.adapter.out.h2.mybatis.AccountRow;
 import com.example.account.application.port.out.LoadAccountPort;
 import com.example.account.application.port.out.SaveAccountPort;
 import com.example.account.domain.exception.AccountNotFoundException;
@@ -20,15 +21,17 @@ class H2AccountPersistenceAdapter implements LoadAccountPort, SaveAccountPort {
 
     @Override
     public Account load(String accountNumber) {
-        Account account = mapper.findByAccountNumber(accountNumber);
-        if (account == null) {
+        var row = mapper.findByAccountNumber(accountNumber);
+
+        if (row == null) {
             throw new AccountNotFoundException("Account not found: " + accountNumber);
         }
-        return account;
+        return Account.of(row.getAccountNumber(), row.getName(), row.getBalance());
     }
 
     @Override
     public void save(Account account) {
-        mapper.upsert(account);
+        var row = AccountRow.of(account);
+        mapper.upsert(row);
     }
 }

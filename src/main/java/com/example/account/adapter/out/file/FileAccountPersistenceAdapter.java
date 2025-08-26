@@ -26,7 +26,7 @@ public class FileAccountPersistenceAdapter implements LoadAccountPort, SaveAccou
             String[] lines = Files.readAllLines(filePath).toArray(new String[0]);
             String name = lines[0];
             long balance = Long.parseLong(lines[1]);
-            return new Account(accountNumber, name, balance);
+            return Account.of(accountNumber, name, balance);
         } catch (IOException e) {
             throw new RuntimeException("Failed to load account", e);
         }

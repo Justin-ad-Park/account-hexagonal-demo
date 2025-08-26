@@ -5,23 +5,20 @@
 
 <mapper namespace="com.example.account.adapter.out.h2.mapper.AccountMapper">
 
-    <!-- Domain 생성자를 이용해 바로 매핑 -->
-    <resultMap id="AccountResultMap" type="com.example.account.domain.model.Account">
-        <constructor>
-            <arg column="account_number" javaType="java.lang.String"/>
-            <arg column="name"           javaType="java.lang.String"/>
-            <arg column="balance"        javaType="long"/>
-        </constructor>
+    <resultMap id="AccountRowMap" type="com.example.account.adapter.out.h2.mybatis.AccountRow">
+        <id     property="accountNumber" column="account_number"/>
+        <result property="name"          column="name"/>
+        <result property="balance"       column="balance"/>
     </resultMap>
 
-    <select id="findByAccountNumber" parameterType="string" resultMap="AccountResultMap">
+    <select id="findByAccountNumber" parameterType="string" resultMap="AccountRowMap">
         SELECT account_number, name, balance
         FROM account
         WHERE account_number = #{accountNumber}
     </select>
 
     <!-- H2의 MERGE INTO로 upsert 처리 -->
-    <insert id="upsert" parameterType="com.example.account.domain.model.Account">
+    <insert id="upsert" parameterType="com.example.account.adapter.out.h2.mybatis.AccountRow">
         MERGE INTO account (account_number, name, balance) KEY(account_number)
         VALUES (#{accountNumber}, #{name}, #{balance})
     </insert>

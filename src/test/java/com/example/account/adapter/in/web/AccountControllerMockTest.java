@@ -36,7 +36,7 @@ class AccountControllerMockTest {
 
     @Test
     void createAccount_shouldReturnCreatedAccount() throws Exception {
-        Account account = new Account("123", "Alice", 1000L);
+        Account account = Account.of("123", "Alice", 1000L);
         given(createAccountUseCase.createAccount("123", "Alice", 1000L))
                 .willReturn(account);
 
@@ -53,7 +53,7 @@ class AccountControllerMockTest {
 
     @Test
     void deposit_shouldReturnUpdatedAccount() throws Exception {
-        Account account = new Account("123", "Alice", 1500L);
+        Account account = Account.of("123", "Alice", 1500L);
         given(depositUseCase.deposit(ArgumentMatchers.eq("123"), ArgumentMatchers.any(Amount.class)))
                 .willReturn(account);
 
@@ -65,7 +65,7 @@ class AccountControllerMockTest {
 
     @Test
     void withdraw_shouldReturnUpdatedAccount() throws Exception {
-        Account account = new Account("123", "Alice", 1200L);
+        Account account = Account.of("123", "Alice", 1200L);
         given(withdrawUseCase.withdraw(ArgumentMatchers.eq("123"), ArgumentMatchers.any(Amount.class)))
                 .willReturn(account);
 
@@ -80,7 +80,7 @@ class AccountControllerMockTest {
 
     @Test
     void getAccount_shouldReturnAccount() throws Exception {
-        Account account = new Account("123", "Alice", 800L);
+        Account account = Account.of("123", "Alice", 800L);
         given(getAccountQuery.getAccount(ArgumentMatchers.eq("123")))
                 .willReturn(account);
 
