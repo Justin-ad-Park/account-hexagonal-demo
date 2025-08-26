@@ -25,7 +25,7 @@ public class AccountResponse{
     public String getName() { return name; }
     public long getBalance() { return balance; }
 
-    public static AccountResponse byAccount(Account account) {
+    public static AccountResponse of(Account account) {
         return new AccountResponse(account.getAccountNumber(), account.getName(), account.getBalance());
     }
 

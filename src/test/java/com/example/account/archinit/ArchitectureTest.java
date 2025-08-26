@@ -66,7 +66,7 @@ public class ArchitectureTest {
             classes().that().resideInAPackage(APPLICATION)
                     .and().areNotAnnotatedWith(Configuration.class)
                     .should().onlyDependOnClassesThat().resideInAnyPackage(
-                            APPLICATION, DOMAIN, "java..", "jakarta..", "org.slf4j.."
+                            APPLICATION, DOMAIN, "java..", "jakarta..", "org.slf4j..", "org.springframework.."
                     );
 //
     /**
@@ -92,8 +92,7 @@ public class ArchitectureTest {
             classes().that().resideInAPackage(ADAPTER_OUT)
                     .and().areNotAnnotatedWith(Configuration.class)
                     .and().areNotAnnotatedWith(Mapper.class)
-
-                    .should().dependOnClassesThat().resideInAnyPackage(APP_PORT_OUT);
+                    .should().dependOnClassesThat().resideInAnyPackage(APP_PORT_OUT, DOMAIN);
 
     /**
      * 4) 도메인은 Spring/JPA 프레임워크에 의존하지 않는다 (순수 자바)

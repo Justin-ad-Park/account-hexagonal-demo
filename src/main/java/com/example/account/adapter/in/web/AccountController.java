@@ -38,28 +38,28 @@ public class AccountController {
                                                   @RequestParam @NotBlank String name,
                                                   @RequestParam @PositiveOrZero long balance) {
         var acc = createAccountUseCase.createAccount(accountNumber, name, balance);
-        var body = AccountResponse.byAccount(acc);
+        var body = AccountResponse.of(acc);
         return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
     @PostMapping("/{accountNumber}/deposit")
     public ResponseEntity<AccountResponse>  deposit(@PathVariable @NotBlank String accountNumber, @RequestParam @PositiveOrZero long amount) {
         var acc = depositUseCase.deposit(accountNumber, new Amount(amount));
-        var body = AccountResponse.byAccount(acc);
+        var body = AccountResponse.of(acc);
         return ResponseEntity.ok(body); // 200 OK
     }
 
     @PostMapping("/{accountNumber}/withdraw")
     public ResponseEntity<AccountResponse>  withdraw(@PathVariable @NotBlank String accountNumber, @RequestParam @PositiveOrZero  long amount) {
         var acc = withdrawUseCase.withdraw(accountNumber, new Amount(amount));
-        var body = AccountResponse.byAccount(acc);
+        var body = AccountResponse.of(acc);
         return ResponseEntity.ok(body); // 200 OK
     }
 
     @GetMapping("/{accountNumber}")
     public ResponseEntity<AccountResponse>  getAccount(@PathVariable @NotBlank String accountNumber) {
         var acc = getAccountQuery.getAccount(accountNumber);
-        var body = AccountResponse.byAccount(acc);
+        var body = AccountResponse.of(acc);
         return ResponseEntity.ok(body); // 200 OK
     }
 
