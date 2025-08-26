@@ -84,7 +84,7 @@ public class ArchitectureTest {
             classes().that().resideInAPackage(ADAPTER_IN)
                     .should().onlyDependOnClassesThat().resideInAnyPackage(
                             ADAPTER_IN, APPLICATION, APP_PORT_IN, APP_SERVICE, DOMAIN,
-                            "java..", "jakarta..", "org.slf4j..", "org.springframework.."
+                            "java..", "javax..", "jakarta..", "org.slf4j..", "org.springframework.."
                     );
 
     @ArchTest

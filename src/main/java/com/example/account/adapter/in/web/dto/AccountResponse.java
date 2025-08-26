@@ -1,11 +1,18 @@
 package com.example.account.adapter.in.web.dto;
 
 import com.example.account.domain.model.Account;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
 
 // adapter/in/web/dto/AccountResponse.java
 public class AccountResponse{
+    @NotBlank
     private final String accountNumber;
+
+    @NotBlank
     private final String name;
+
+    @PositiveOrZero
     private final long balance;
 
     private AccountResponse(String accountNumber, String name, long balance) {

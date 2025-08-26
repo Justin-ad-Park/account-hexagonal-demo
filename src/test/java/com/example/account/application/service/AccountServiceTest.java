@@ -40,4 +40,12 @@ class AccountServiceTest {
         account = getAccountQuery.getAccount("123");
         assertEquals(1200L, account.getBalance());
     }
+
+    @Test
+    void getAccount_shouldThrow_whenAccountDoesNotExist() {
+        // 없는 계좌를 조회할 때 예외 발생을 검증
+        assertThrows(IllegalArgumentException.class, () -> {
+            getAccountQuery.getAccount("noAccount");
+        });
+    }
 }

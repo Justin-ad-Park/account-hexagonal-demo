@@ -2,6 +2,7 @@ package com.example.account.adapter.out.file;
 
 import com.example.account.application.port.out.LoadAccountPort;
 import com.example.account.application.port.out.SaveAccountPort;
+import com.example.account.domain.exception.AccountNotFoundException;
 import com.example.account.domain.model.Account;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ public class FileAccountPersistenceAdapter implements LoadAccountPort, SaveAccou
         Path filePath = basePath.resolve(accountNumber + ".txt");
         try {
             if (!Files.exists(filePath)) {
-                throw new IllegalArgumentException("Account not found");
+                throw new AccountNotFoundException("Account not found");
             }
             String[] lines = Files.readAllLines(filePath).toArray(new String[0]);
             String name = lines[0];

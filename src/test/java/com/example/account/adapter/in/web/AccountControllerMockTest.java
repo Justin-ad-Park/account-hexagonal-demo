@@ -45,7 +45,7 @@ class AccountControllerMockTest {
                         .param("name", "Alice")
                         .param("balance", "1000")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.accountNumber").value("123"))
                 .andExpect(jsonPath("$.name").value("Alice"))
                 .andExpect(jsonPath("$.balance").value(1000));

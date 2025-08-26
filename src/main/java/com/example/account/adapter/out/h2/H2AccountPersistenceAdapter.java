@@ -2,6 +2,7 @@ package com.example.account.adapter.out.h2;
 
 import com.example.account.application.port.out.LoadAccountPort;
 import com.example.account.application.port.out.SaveAccountPort;
+import com.example.account.domain.exception.AccountNotFoundException;
 import com.example.account.domain.model.Account;
 import com.example.account.adapter.out.h2.mapper.AccountMapper;
 
@@ -21,7 +22,7 @@ class H2AccountPersistenceAdapter implements LoadAccountPort, SaveAccountPort {
     public Account load(String accountNumber) {
         Account account = mapper.findByAccountNumber(accountNumber);
         if (account == null) {
-            throw new IllegalArgumentException("Account not found: " + accountNumber);
+            throw new AccountNotFoundException("Account not found: " + accountNumber);
         }
         return account;
     }

@@ -13,6 +13,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.ResponseEntity;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -112,5 +113,16 @@ class AccountControllerFileTest {
 
         assertThat(account).isNotNull();
         assertThat(account.getBalance()).isEqualTo(1200L);
+    }
+
+    @Test @Order(5)
+    void 없는계좌조회_shouldReturn404() {
+        ResponseEntity<String> response = restTemplate.getForEntity(
+                url("/accounts/noAccount"),
+                String.class
+        );
+
+        // 없는 계좌일 경우 404 응답을 기대
+        assertThat(response.getStatusCode().value()).isEqualTo(404);
     }
 }

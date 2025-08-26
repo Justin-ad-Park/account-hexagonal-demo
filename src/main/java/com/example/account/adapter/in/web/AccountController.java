@@ -6,10 +6,16 @@ import com.example.account.application.port.in.DepositUseCase;
 import com.example.account.application.port.in.GetAccountQuery;
 import com.example.account.application.port.in.WithdrawUseCase;
 import com.example.account.domain.model.Amount;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
 
 @RestController
 @RequestMapping("/accounts")
+@Validated
 public class AccountController {
 
     private final CreateAccountUseCase createAccountUseCase;
@@ -28,29 +34,33 @@ public class AccountController {
     }
 
     @PostMapping
-    public AccountResponse create(@RequestParam String accountNumber,
-                                  @RequestParam String name,
-                                  @RequestParam long balance) {
+    public ResponseEntity<AccountResponse> create(@RequestParam @NotBlank String accountNumber,
+                                                  @RequestParam @NotBlank String name,
+                                                  @RequestParam @PositiveOrZero long balance) {
         var acc = createAccountUseCase.createAccount(accountNumber, name, balance);
-        return AccountResponse.byAccount(acc);
+        var body = AccountResponse.byAccount(acc);
+        return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
     @PostMapping("/{accountNumber}/deposit")
-    public AccountResponse deposit(@PathVariable String accountNumber, @RequestParam long amount) {
+    public ResponseEntity<AccountResponse>  deposit(@PathVariable @NotBlank String accountNumber, @RequestParam @PositiveOrZero long amount) {
         var acc = depositUseCase.deposit(accountNumber, new Amount(amount));
-        return AccountResponse.byAccount(acc);
+        var body = AccountResponse.byAccount(acc);
+        return ResponseEntity.ok(body); // 200 OK
     }
 
     @PostMapping("/{accountNumber}/withdraw")
-    public AccountResponse withdraw(@PathVariable String accountNumber, @RequestParam long amount) {
+    public ResponseEntity<AccountResponse>  withdraw(@PathVariable @NotBlank String accountNumber, @RequestParam @PositiveOrZero  long amount) {
         var acc = withdrawUseCase.withdraw(accountNumber, new Amount(amount));
-        return AccountResponse.byAccount(acc);
+        var body = AccountResponse.byAccount(acc);
+        return ResponseEntity.ok(body); // 200 OK
     }
 
     @GetMapping("/{accountNumber}")
-    public AccountResponse getAccount(@PathVariable String accountNumber) {
+    public ResponseEntity<AccountResponse>  getAccount(@PathVariable @NotBlank String accountNumber) {
         var acc = getAccountQuery.getAccount(accountNumber);
-        return AccountResponse.byAccount(acc);
+        var body = AccountResponse.byAccount(acc);
+        return ResponseEntity.ok(body); // 200 OK
     }
 
 }
