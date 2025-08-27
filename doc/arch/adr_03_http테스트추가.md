@@ -1,4 +1,4 @@
-# 2. http client plug-in(intelliJ) 추가
+# 3. http client plug-in(intelliJ) 추가
 Date: 2025-08-12
 
 # status

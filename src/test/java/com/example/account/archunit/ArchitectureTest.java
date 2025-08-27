@@ -1,18 +1,11 @@
-package com.example.account.archinit;
+package com.example.account.archunit;
 
-import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
-import com.tngtech.archunit.base.DescribedPredicate;
-import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Configuration;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
@@ -64,7 +57,7 @@ public class ArchitectureTest {
     @ArchTest
     static final ArchRule application_should_depend_only_on_domain_or_itself =
             classes().that().resideInAPackage(APPLICATION)
-                    .and().areNotAnnotatedWith(Configuration.class)
+                    //.and().areNotAnnotatedWith(Configuration.class)   //빈 주입을 위한 @Configuration 어노테이션이 붙은 경우는 제외할 때
                     .should().onlyDependOnClassesThat().resideInAnyPackage(
                             APPLICATION, DOMAIN, "java..", "jakarta..", "org.slf4j..", "org.springframework.."
                     );
