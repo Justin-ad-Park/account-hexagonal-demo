@@ -1,5 +1,5 @@
 # 4. archunit 의존성 검사
-Date: 2025-08-12
+Date: 2025-08-26
 
 # status
  Applied

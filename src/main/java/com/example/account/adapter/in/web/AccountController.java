@@ -5,7 +5,10 @@ import com.example.account.application.port.in.CreateAccountUseCase;
 import com.example.account.application.port.in.DepositUseCase;
 import com.example.account.application.port.in.GetAccountQuery;
 import com.example.account.application.port.in.WithdrawUseCase;
+import com.example.account.domain.model.Account;
+import com.example.account.domain.model.AccountCommands;
 import com.example.account.domain.model.Amount;
+import com.example.account.internal.DomainCommand;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -39,6 +42,7 @@ public class AccountController {
                                                   @RequestParam @PositiveOrZero long balance) {
         var acc = createAccountUseCase.createAccount(accountNumber, name, balance);
         var body = AccountResponse.of(acc);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 

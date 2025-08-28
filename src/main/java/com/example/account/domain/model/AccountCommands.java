@@ -1,10 +1,13 @@
 package com.example.account.domain.model;
 
+import com.example.account.internal.DomainCommand;
+
 /**
  * 도메인 변경을 한 곳으로 모으는 얇은 퍼사드.
  * - 같은 패키지에 있기 때문에 Account의 package-private 메서드 호출 가능
  * - 응용 계층은 이 정적 메서드만 사용하여 도메인 변경을 트리거
  */
+@DomainCommand
 public final class AccountCommands {
     private AccountCommands() {}
 

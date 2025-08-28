@@ -1,11 +1,15 @@
 package com.example.account.archunit;
 
 
+import com.example.account.internal.DomainCommand;
+import com.tngtech.archunit.core.domain.JavaClasses;
+import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
 import org.apache.ibatis.annotations.Mapper;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.annotation.Configuration;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
@@ -129,45 +133,47 @@ public class ArchitectureTest {
                     .should().resideInAPackage(APP_SERVICE);
 
 
+    /** 프로덕션 클래스만 로드(테스트/외부 라이브러리 제외) */
+    private JavaClasses loadProductionClasses() {
+        return new ClassFileImporter()
+                .withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS)
+                .importPackages(BASE_PACKAGE);
+    }
 
-//    /**
-//     * 9) 레이어드 아키텍처 형태로도 한번 더 보수적으로 검증 (선택)
-//     *    - domain <- application <- adapter 방향만 허용
-//     */
-//    @ArchTest
-//    static final ArchRule layered_dependencies_are_respected =
-//            layeredArchitecture()
-//                    .consideringAllDependencies()
-//                    .ignoreDependency(
-//                            annotatedWith(Configuration.class)
-//                                    .or(annotatedWith(SpringBootConfiguration.class))
-//                                    .or(annotatedWith(EnableAutoConfiguration.class))
-//                                    .or(annotatedWith(ConfigurationProperties.class))
-//                                    .or(annotatedWith(TestConfiguration.class)),
-//                            DescribedPredicate.alwaysTrue()
-//                    )
-//                    .layer("Domain").definedBy(DOMAIN)
-//                    .layer("Application").definedBy(APPLICATION)
-//                    .layer("Adapter").definedBy(ADAPTER)
-//                    .layer("Config").definedBy(CONFIG)
-//
-//                    // 허용 규칙
-//                    .whereLayer("Application").mayOnlyAccessLayers("Domain", "Application")
-//                    .whereLayer("Adapter").mayOnlyAccessLayers("Application", "Domain", "Adapter", "Config")
-//                    .whereLayer("Config").mayOnlyAccessLayers("Application", "Domain", "Adapter", "Config")
-//
-//                    // 금지 규칙
-//                    .whereLayer("Domain").mayNotBeAccessedByAnyLayer()
-//                    .whereLayer("Application").mayOnlyBeAccessedByLayers("Adapter", "Config", "Application");
-//                    ;
-//
-//    public static DescribedPredicate<JavaClass> annotatedWith(final Class<? extends java.lang.annotation.Annotation> annotation) {
-//        return new DescribedPredicate<JavaClass>("annotated with " + annotation.getSimpleName()) {
-//            @Override
-//            public boolean test(JavaClass input) {
-//                return input.isAnnotatedWith(annotation);
-//            }
-//        };
-//    }
+    /**
+     * 9) @DomainCommand이 붙은 클래스는 서비스 패키지에서만 의존해야 한다.
+     * (즉, AccountCommands 등은 application.service 안에서만 사용할 수 있다)
+     *
+     * 테스트 방법 : AbuseControllerForArchunit의 주석을 풀어 AccountCommands를 직접 사용하도록 만든 후 테스트
+     */
+    @Test
+    void forbid_using_DomainCommand_outside_service_package() {
+        JavaClasses classes = loadProductionClasses();
+
+        ArchRule rule = noClasses()
+                .that().resideOutsideOfPackage(APP_SERVICE)
+                .should().dependOnClassesThat().areAnnotatedWith(DomainCommand.class);
+
+        rule.check(classes);
+    }
+
+    /**
+     * 10)@DomainCommand 어노테이션 사용 위반 검출
+     * @DomainCommand는 오직 application.service 패키지만 사용해야 한다.
+     *
+     *      * 테스트 방법
+     *          1) AbuseControllerForArchunit의 주석을 풀어 AccountCommands를 직접 사용하도록 만든 후 테스트
+     *          2) 다른 패키지에 어노테이션을 붙여 테스트
+     */
+    @Test
+    void only_services_may_depend_on_DomainCommand_types() {
+        JavaClasses classes = loadProductionClasses();
+
+        ArchRule rule = classes()
+                .that().areAnnotatedWith(DomainCommand.class)
+                .should().onlyHaveDependentClassesThat().resideInAnyPackage(APP_SERVICE);
+
+        rule.check(classes);
+    }
 
 }
