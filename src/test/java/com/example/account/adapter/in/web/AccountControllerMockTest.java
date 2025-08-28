@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(AbuseControllerForArchunit.class)
+@WebMvcTest(AccountController.class) // ← 컨트롤러만 로드
 class AccountControllerMockTest {
 
     @Autowired
