@@ -19,6 +19,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+/**
+ * @WebMvcTest
+ *
+ * WebMvcTestContextBootstrapper
+ * MVC 관련 빈만 로딩하도록 슬라이스 필터링
+ * MockMvc 자동 구성, 컨트롤러/@ControllerAdvice/MappingJackson2HttpMessageConverter 등만 빈으로 로딩
+ * 서비스/리포지토리 등은 로딩되지 않으며, 필요 시 @MockBean으로 주입
+ */
 @WebMvcTest(AccountController.class) // ← 컨트롤러만 로드
 class AccountControllerMockTest {
 

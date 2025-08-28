@@ -14,6 +14,13 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * @SpringBootTest
+ *
+ * SpringBootTestContextBootstrapper → SpringBootContextLoader
+ * 전체 애플리케이션 컨텍스트(내장 서버 여부, webEnvironment)까지 고려
+ * SpringApplication 경로로 빈 등록/오토컨피그 전부 활성화
+ */
 @ActiveProfiles("h2")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
