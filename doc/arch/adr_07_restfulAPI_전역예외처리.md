@@ -127,7 +127,37 @@ Date: Thu, 28 Aug 2025 23:43:07 GMT
 
 
 # Consequences
+- @ControllerAdvice에는 "basePackages"를 지정할 수 있는 속성이 있음
+- 즉, package 별로 ExceptionHandler를 나눌 수 있으니 실무에서는 value() 속성 활용
+
+#### [@interface ControllerAdvice]
+```java
+  @AliasFor("basePackages")
+  String[] value() default {};
+```
+- value 속성은 어노테이션의 기본 속성으로 속성값을 명시하지 않고도 사용 가능
+```java
+// 모든 contoller에 사용
+@ControllerAdvice
+
+// 특정 패키지만 사용
+@ControllerAdvice(basePackages = "com.example.api")
+@ControllerAdvice("com.example.api")
+
+// 여러 패키지 지정
+@ControllerAdvice(basePackages = {"com.example.api", "com.example.admin"})
+@ControllerAdvice({"com.example.api", "com.example.admin"})
+
+// 패키지 클래스 지정 : 지정한 클래스가 포함된 패키지 전체가 적용 범위가 됨, 문자열 대신 클래스 참조로 컴파일 타임에 안전하게 체크 가능
+@ControllerAdvice(basePackageClasses = {ApiController.class, AdminController.class})
+
+// 어노테이션 기준
+@ControllerAdvice(annotations = RestController.class)
 
 
-- 
-
+// 조합 (패키지에 어노테이션이 붙은 대상만 처리)
+@ControllerAdvice(
+        basePackages = "com.example.api",
+        annotations = RestController.class
+)
+```

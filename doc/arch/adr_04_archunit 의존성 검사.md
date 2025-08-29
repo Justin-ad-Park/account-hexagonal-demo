@@ -23,7 +23,7 @@ Date: 2025-08-26
 ```
 
 ### test/java/archunit/
-- build.gradle
+- ArchitectureTest
 ```java
     /**
      * 1) 도메인은 어떤 레이어에도 의존하지 않는다 (순수성 보장)

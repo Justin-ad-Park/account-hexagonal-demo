@@ -1,6 +1,6 @@
 
-Michael Nygard이 November 15, 2011에 
-기술 블로그에 소개한 개념으로 Archtecture Decisions Records의 약자
+## Michael Nygard이 November 15, 2011에 
+### 기술 블로그에 소개한 개념으로 Archtecture Decisions Records의 약자
 
 # 문맥(context)
 애자일 프로젝트의 아키텍처는 다르게 설명하고 정의해야 합니다. 모든 결정이 한꺼번에 내려지는 것도 아니고, 프로젝트 시작 시 모든 결정이 완료되는 것도 아닙니다.
