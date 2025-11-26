@@ -19,14 +19,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-/**
- * @WebMvcTest
- *
- * WebMvcTestContextBootstrapper
- * MVC 관련 빈만 로딩하도록 슬라이스 필터링
- * MockMvc 자동 구성, 컨트롤러/@ControllerAdvice/MappingJackson2HttpMessageConverter 등만 빈으로 로딩
- * 서비스/리포지토리 등은 로딩되지 않으며, 필요 시 @MockBean으로 주입
- */
 @WebMvcTest(AccountController.class) // ← 컨트롤러만 로드
 class AccountControllerMockTest {
 
@@ -42,6 +34,9 @@ class AccountControllerMockTest {
     @MockBean
     private WithdrawUseCase withdrawUseCase;
 
+    @MockBean
+    private GetAccountQuery getAccountQuery; // getAccountQuery는 이미 MockBean으로 선언되어 있으므로 재선언 불필요
+
     @Test
     void createAccount_shouldReturnCreatedAccount() throws Exception {
         Account account = Account.of("123", "Alice", 1000L);
@@ -53,10 +48,14 @@ class AccountControllerMockTest {
                         .param("name", "Alice")
                         .param("balance", "1000")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.accountNumber").value("123"))
-                .andExpect(jsonPath("$.name").value("Alice"))
-                .andExpect(jsonPath("$.balance").value(1000));
+                // 1. 상태 코드는 200 OK로 변경
+                .andExpect(status().isOk())
+                // 2. 응답 본문의 success 필드가 true인지 확인
+                .andExpect(jsonPath("$.success").value(true))
+                // 3. 실제 데이터는 data 필드 아래에 위치
+                .andExpect(jsonPath("$.data.accountNumber").value("123"))
+                .andExpect(jsonPath("$.data.name").value("Alice"))
+                .andExpect(jsonPath("$.data.balance").value(1000));
     }
 
     @Test
@@ -67,8 +66,12 @@ class AccountControllerMockTest {
 
         mockMvc.perform(post("/accounts/123/deposit")
                         .param("amount", "500"))
+                // 1. 상태 코드는 200 OK
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.balance").value(1500));
+                // 2. success 필드가 true인지 확인
+                .andExpect(jsonPath("$.success").value(true))
+                // 3. data 필드 아래의 balance 확인
+                .andExpect(jsonPath("$.data.balance").value(1500));
     }
 
     @Test
@@ -79,12 +82,13 @@ class AccountControllerMockTest {
 
         mockMvc.perform(post("/accounts/123/withdraw")
                         .param("amount", "300"))
+                // 1. 상태 코드는 200 OK
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.balance").value(1200));
+                // 2. success 필드가 true인지 확인
+                .andExpect(jsonPath("$.success").value(true))
+                // 3. data 필드 아래의 balance 확인
+                .andExpect(jsonPath("$.data.balance").value(1200));
     }
-
-    @MockBean
-    private GetAccountQuery getAccountQuery;
 
     @Test
     void getAccount_shouldReturnAccount() throws Exception {
@@ -93,9 +97,11 @@ class AccountControllerMockTest {
                 .willReturn(account);
 
         mockMvc.perform(get("/accounts/123"))
+                // 1. 상태 코드는 200 OK
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.balance").value(800));
+                // 2. success 필드가 true인지 확인
+                .andExpect(jsonPath("$.success").value(true))
+                // 3. data 필드 아래의 balance 확인
+                .andExpect(jsonPath("$.data.balance").value(800));
     }
-
-
 }
