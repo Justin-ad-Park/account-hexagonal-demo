@@ -1,4 +1,4 @@
-# 7. restful API 응답 처리 방식 개선
+# 8. adr_08_restfulAPI_응답처리 방식 개선
 Date: 2025-11-34
 
 # status

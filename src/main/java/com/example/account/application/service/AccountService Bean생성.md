@@ -1,5 +1,9 @@
 # account-hexagonal-demo
 
+### @Service 어노테이션으로 빈 주입을 변경함. 인터페이스의 구현체가 하나(AccountService)이기 때문에 @Service 어노테이션으로 빈 주입 가능
+ 만약 둘 이상의 구현체가 있다면 @Service 어노테이션을 하나에만 붙이거나(사용할 빈 선택), 아니면 @Configuration 클래스로 빈을 주입해야 함
+ (AccountServiceConfig.java, AccountService2.java 참고)
+
 ### AccountService를 package-private 으로 변경한 이유가 헥사고날 아키텍처에서 <br>in, out 포트를 제외한 내부 도메인 서비스를 외부에서 직접 호출하지 못하도록 막기 위해서 였는데, <br> ApplicationConfig에서 AccountService를 @Bean으로 등록하면 결국 package-private이 무용지물이 되는 것인가? 
 
 
