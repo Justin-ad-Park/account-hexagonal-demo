@@ -26,6 +26,11 @@ dependencies {
 
     //Validation
     implementation("org.springframework.boot:spring-boot-starter-validation")
+
+    // UUID 생성용
+    testImplementation 'com.fasterxml.uuid:java-uuid-generator:5.0.0'   // UUIDv7
+    testImplementation 'com.github.f4b6a3:ulid-creator:5.2.0'           // ULID
+    testImplementation 'com.github.ksuid:ksuid:1.1.2'                   // KSUID
 }
 
 test {
