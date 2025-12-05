@@ -58,7 +58,7 @@ public ResponseEntity<ApiResponse<AccountResponse>> getAccount(@PathVariable @No
     // 항상 200 OK와 함께 ApiResponse.success()를 반환
     return ResponseEntity.ok(ApiResponse.success(body));
 }
-}
+
 ```
 ### GlobalExceptionHandler
 ```java
