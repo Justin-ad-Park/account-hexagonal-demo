@@ -61,7 +61,7 @@ class AccountControllerMockTest {
     @Test
     void deposit_shouldReturnUpdatedAccount() throws Exception {
         Account account = Account.of("123", "Alice", 1500L);
-        given(depositUseCase.deposit(ArgumentMatchers.eq("123"), ArgumentMatchers.any(Amount.class)))
+        given(depositUseCase.deposit(ArgumentMatchers.eq("123"), ArgumentMatchers.any(Long.class)))
                 .willReturn(account);
 
         mockMvc.perform(post("/accounts/123/deposit")
@@ -77,7 +77,7 @@ class AccountControllerMockTest {
     @Test
     void withdraw_shouldReturnUpdatedAccount() throws Exception {
         Account account = Account.of("123", "Alice", 1200L);
-        given(withdrawUseCase.withdraw(ArgumentMatchers.eq("123"), ArgumentMatchers.any(Amount.class)))
+        given(withdrawUseCase.withdraw(ArgumentMatchers.eq("123"), ArgumentMatchers.anyLong()))
                 .willReturn(account);
 
         mockMvc.perform(post("/accounts/123/withdraw")

@@ -4,5 +4,5 @@ import com.example.account.domain.model.Account;
 import com.example.account.domain.model.Amount;
 
 public interface WithdrawUseCase {
-    Account withdraw(String accountNumber, Amount amount);
+    Account withdraw(String accountNumber, long amount);
 }

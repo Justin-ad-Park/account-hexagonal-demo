@@ -6,7 +6,6 @@ import com.example.account.application.port.in.CreateAccountUseCase;
 import com.example.account.application.port.in.DepositUseCase;
 import com.example.account.application.port.in.GetAccountQuery;
 import com.example.account.application.port.in.WithdrawUseCase;
-import com.example.account.domain.model.Amount;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +46,7 @@ public class AccountController {
     @PostMapping("/{accountNumber}/deposit")
     public ResponseEntity<ApiResponse<AccountResponse>> deposit(@PathVariable @NotBlank String accountNumber,
                                                                 @RequestParam @PositiveOrZero long amount) {
-        var acc = depositUseCase.deposit(accountNumber, new Amount(amount));
+        var acc = depositUseCase.deposit(accountNumber, amount);
         var body = AccountResponse.of(acc);
 
         // HTTP 상태 코드를 OK(200)로 통일하고, ApiResponse.success()로 감싸서 반환
@@ -57,7 +56,7 @@ public class AccountController {
     @PostMapping("/{accountNumber}/withdraw")
     public ResponseEntity<ApiResponse<AccountResponse>> withdraw(@PathVariable @NotBlank String accountNumber,
                                                                  @RequestParam @PositiveOrZero long amount) {
-        var acc = withdrawUseCase.withdraw(accountNumber, new Amount(amount));
+        var acc = withdrawUseCase.withdraw(accountNumber, amount);
         var body = AccountResponse.of(acc);
 
         // HTTP 상태 코드를 OK(200)로 통일하고, ApiResponse.success()로 감싸서 반환
@@ -77,14 +76,14 @@ public class AccountController {
 
     @PostMapping("/{accountNumber}/deposit")
     public ResponseEntity<AccountResponse>  deposit(@PathVariable @NotBlank String accountNumber, @RequestParam @PositiveOrZero long amount) {
-        var acc = depositUseCase.deposit(accountNumber, new Amount(amount));
+        var acc = depositUseCase.deposit(accountNumber, amount);
         var body = AccountResponse.of(acc);
         return ResponseEntity.ok(body); // 200 OK
     }
 
     @PostMapping("/{accountNumber}/withdraw")
     public ResponseEntity<AccountResponse>  withdraw(@PathVariable @NotBlank String accountNumber, @RequestParam @PositiveOrZero  long amount) {
-        var acc = withdrawUseCase.withdraw(accountNumber, new Amount(amount));
+        var acc = withdrawUseCase.withdraw(accountNumber, amount);
         var body = AccountResponse.of(acc);
         return ResponseEntity.ok(body); // 200 OK
     }

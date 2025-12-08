@@ -32,10 +32,10 @@ class AccountServiceTest {
 //        account = getAccountQuery.getAccount("123");
 //        assertEquals(1000L, account.getBalance());
 
-        account = depositUseCase.deposit("123", new Amount(500));
+        account = depositUseCase.deposit("123", 500);
         assertEquals(1500L, account.getBalance());
 
-        account = withdrawUseCase.withdraw("123", new Amount(300));
+        account = withdrawUseCase.withdraw("123", 300);
         assertEquals(1200L, account.getBalance());
 
         account = getAccountQuery.getAccount("123");

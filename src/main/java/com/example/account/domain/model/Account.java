@@ -23,13 +23,13 @@ public class Account {
     public String getName() { return name; }
     public long getBalance() { return balance; }
 
-    // ★ 변경 메서드는 package-private 로 축소(접근 제한자 없음)
-    void deposit(Amount amount) {
+    // 변경 메서드를 공개해서 Rich Aggregate로 사용
+    public void deposit(Amount amount) {
         if (amount.getValue() <= 0) throw new IllegalArgumentException("Deposit must be positive");
         balance += amount.getValue();
     }
 
-    void withdraw(Amount amount) {
+    public void withdraw(Amount amount) {
         if (amount.getValue() <= 0) throw new IllegalArgumentException("Withdraw must be positive");
         if (balance < amount.getValue()) throw new IllegalStateException("Insufficient balance");
         balance -= amount.getValue();

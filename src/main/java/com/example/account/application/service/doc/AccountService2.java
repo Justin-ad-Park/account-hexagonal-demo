@@ -1,5 +1,15 @@
 package com.example.account.application.service.doc;
 
+import com.example.account.application.port.in.CreateAccountUseCase;
+import com.example.account.application.port.in.DepositUseCase;
+import com.example.account.application.port.in.WithdrawUseCase;
+import com.example.account.application.port.out.LoadAccountPort;
+import com.example.account.application.port.out.SaveAccountPort;
+import com.example.account.domain.model.Account;
+import com.example.account.domain.model.Amount;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * [ver02 변경사항]
  * public class와 생성자를 package-private으로 변경
@@ -21,7 +31,7 @@ package com.example.account.application.service.doc;
 //
 //    @Override
 //    public Account createAccount(String accountNumber, String name, long initialBalance) {
-//        Account account = AccountCommands.create(accountNumber, name, initialBalance);
+//        Account account = Account.of(accountNumber, name, initialBalance);
 //        saveAccountPort.save(account);
 //        return account;
 //    }
@@ -29,7 +39,7 @@ package com.example.account.application.service.doc;
 //    @Override
 //    public Account deposit(String accountNumber, Amount amount) {
 //        Account account = loadAccountPort.load(accountNumber);
-//        AccountCommands.deposit(account, amount);
+//        account.deposit(amount);
 //        saveAccountPort.save(account);
 //        return account;
 //    }
@@ -37,7 +47,7 @@ package com.example.account.application.service.doc;
 //    @Override
 //    public Account withdraw(String accountNumber, Amount amount) {
 //        Account account = loadAccountPort.load(accountNumber);
-//        AccountCommands.withdraw(account, amount);
+//        account.withdraw(amount);
 //        saveAccountPort.save(account);
 //        return account;
 //    }

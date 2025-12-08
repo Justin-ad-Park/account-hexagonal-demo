@@ -6,7 +6,6 @@ import com.example.account.application.port.in.WithdrawUseCase;
 import com.example.account.application.port.out.LoadAccountPort;
 import com.example.account.application.port.out.SaveAccountPort;
 import com.example.account.domain.model.Account;
-import com.example.account.domain.model.AccountCommands;
 import com.example.account.domain.model.Amount;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,23 +31,23 @@ class AccountService implements CreateAccountUseCase, DepositUseCase, WithdrawUs
 
     @Override
     public Account createAccount(String accountNumber, String name, long initialBalance) {
-        Account account = AccountCommands.create(accountNumber, name, initialBalance);
+        Account account = Account.of(accountNumber, name, initialBalance);
         saveAccountPort.save(account);
         return account;
     }
 
     @Override
-    public Account deposit(String accountNumber, Amount amount) {
+    public Account deposit(String accountNumber, long amount) {
         Account account = loadAccountPort.load(accountNumber);
-        AccountCommands.deposit(account, amount);
+        account.deposit(new Amount(amount));
         saveAccountPort.save(account);
         return account;
     }
 
     @Override
-    public Account withdraw(String accountNumber, Amount amount) {
+    public Account withdraw(String accountNumber, long amount) {
         Account account = loadAccountPort.load(accountNumber);
-        AccountCommands.withdraw(account, amount);
+        account.withdraw(new Amount(amount));
         saveAccountPort.save(account);
         return account;
     }
