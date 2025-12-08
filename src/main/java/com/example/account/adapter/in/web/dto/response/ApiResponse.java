@@ -1,4 +1,6 @@
-package com.example.account.adapter.in.web.dto;
+package com.example.account.adapter.in.web.dto.response;
+
+import com.example.account.adapter.in.web.dto.ApiError;
 
 // 서버 측에서 사용할 공통 응답 DTO
 public class ApiResponse<T> {

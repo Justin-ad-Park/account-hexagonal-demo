@@ -3,6 +3,8 @@ package com.example.account.application.service;
 import com.example.account.application.port.in.CreateAccountUseCase;
 import com.example.account.application.port.in.DepositUseCase;
 import com.example.account.application.port.in.WithdrawUseCase;
+import com.example.account.application.port.in.command.DepositCommand;
+import com.example.account.application.port.in.command.WithdrawCommand;
 import com.example.account.application.port.out.LoadAccountPort;
 import com.example.account.application.port.out.SaveAccountPort;
 import com.example.account.domain.model.Account;
@@ -37,17 +39,17 @@ class AccountService implements CreateAccountUseCase, DepositUseCase, WithdrawUs
     }
 
     @Override
-    public Account deposit(String accountNumber, long amount) {
-        Account account = loadAccountPort.load(accountNumber);
-        account.deposit(new Amount(amount));
+    public Account deposit(DepositCommand depositCommand) {
+        Account account = loadAccountPort.load(depositCommand.accountNumber());
+        account.deposit(new Amount(depositCommand.amount()));
         saveAccountPort.save(account);
         return account;
     }
 
     @Override
-    public Account withdraw(String accountNumber, long amount) {
-        Account account = loadAccountPort.load(accountNumber);
-        account.withdraw(new Amount(amount));
+    public Account withdraw(WithdrawCommand withdrawCommand) {
+        Account account = loadAccountPort.load(withdrawCommand.accountNumber());
+        account.withdraw(new Amount(withdrawCommand.amount()));
         saveAccountPort.save(account);
         return account;
     }

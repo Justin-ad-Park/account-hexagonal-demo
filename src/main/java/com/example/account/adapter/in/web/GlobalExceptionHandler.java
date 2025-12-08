@@ -1,7 +1,7 @@
 package com.example.account.adapter.in.web;
 
 import com.example.account.adapter.in.web.dto.ApiError;
-import com.example.account.adapter.in.web.dto.ApiResponse;
+import com.example.account.adapter.in.web.dto.response.ApiResponse;
 import com.example.account.domain.exception.AccountNotFoundException;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;

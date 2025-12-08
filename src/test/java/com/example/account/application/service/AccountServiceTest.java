@@ -1,6 +1,8 @@
 package com.example.account.application.service;
 
 import com.example.account.application.port.in.GetAccountQuery;
+import com.example.account.application.port.in.command.DepositCommand;
+import com.example.account.application.port.in.command.WithdrawCommand;
 import com.example.account.domain.exception.AccountNotFoundException;
 import com.example.account.domain.model.Amount;
 import com.example.account.application.port.in.CreateAccountUseCase;
@@ -32,10 +34,10 @@ class AccountServiceTest {
 //        account = getAccountQuery.getAccount("123");
 //        assertEquals(1000L, account.getBalance());
 
-        account = depositUseCase.deposit("123", 500);
+        account = depositUseCase.deposit(new DepositCommand("123", 500));
         assertEquals(1500L, account.getBalance());
 
-        account = withdrawUseCase.withdraw("123", 300);
+        account = withdrawUseCase.withdraw(new WithdrawCommand("123", 300));
         assertEquals(1200L, account.getBalance());
 
         account = getAccountQuery.getAccount("123");

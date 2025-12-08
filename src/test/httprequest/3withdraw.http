@@ -1,3 +1,7 @@
 ### 3. 출금
-POST http://localhost:8080/accounts/it-001/withdraw?amount=300
+POST http://localhost:8080/accounts/it-001/withdraw
 Content-Type: application/json
+
+{
+  "amount": 300
+}

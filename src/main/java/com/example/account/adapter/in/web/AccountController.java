@@ -1,16 +1,20 @@
 package com.example.account.adapter.in.web;
 
-import com.example.account.adapter.in.web.dto.AccountResponse;
-import com.example.account.adapter.in.web.dto.ApiResponse;
+import com.example.account.adapter.in.web.dto.response.AccountResponse;
+import com.example.account.adapter.in.web.dto.response.ApiResponse;
+import com.example.account.adapter.in.web.dto.request.AmountRequest;
+import com.example.account.adapter.in.web.dto.request.CreateAccountRequest;
 import com.example.account.application.port.in.CreateAccountUseCase;
 import com.example.account.application.port.in.DepositUseCase;
 import com.example.account.application.port.in.GetAccountQuery;
 import com.example.account.application.port.in.WithdrawUseCase;
+import com.example.account.application.port.in.command.DepositCommand;
+import com.example.account.application.port.in.command.WithdrawCommand;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PositiveOrZero;
 
 @RestController
 @RequestMapping("/accounts")
@@ -33,20 +37,24 @@ public class AccountController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<AccountResponse>> create(@RequestParam @NotBlank String accountNumber,
-                                                               @RequestParam @NotBlank String name,
-                                                               @RequestParam @PositiveOrZero long balance) {
-        var acc = createAccountUseCase.createAccount(accountNumber, name, balance);
-        var body = AccountResponse.of(acc);
+    public ResponseEntity<ApiResponse<AccountResponse>> create(
+            @RequestBody @Valid CreateAccountRequest request
+    ) {
+        var acc = createAccountUseCase.createAccount(
+                request.accountNumber(),
+                request.name(),
+                request.balance()
+        );
 
-        // HTTP 상태 코드를 OK(200)로 통일하고, ApiResponse.success()로 감싸서 반환
+        var body = AccountResponse.of(acc);
         return ResponseEntity.ok(ApiResponse.success(body));
     }
 
     @PostMapping("/{accountNumber}/deposit")
     public ResponseEntity<ApiResponse<AccountResponse>> deposit(@PathVariable @NotBlank String accountNumber,
-                                                                @RequestParam @PositiveOrZero long amount) {
-        var acc = depositUseCase.deposit(accountNumber, amount);
+                                                                @RequestBody @Valid AmountRequest amount) {
+        var depositCommand = new DepositCommand(accountNumber, amount.amount());
+        var acc = depositUseCase.deposit(depositCommand);
         var body = AccountResponse.of(acc);
 
         // HTTP 상태 코드를 OK(200)로 통일하고, ApiResponse.success()로 감싸서 반환
@@ -55,8 +63,9 @@ public class AccountController {
 
     @PostMapping("/{accountNumber}/withdraw")
     public ResponseEntity<ApiResponse<AccountResponse>> withdraw(@PathVariable @NotBlank String accountNumber,
-                                                                 @RequestParam @PositiveOrZero long amount) {
-        var acc = withdrawUseCase.withdraw(accountNumber, amount);
+                                                                 @RequestBody @Valid AmountRequest amount) {
+        var withdrawCommand = new WithdrawCommand(accountNumber, amount.amount());
+        var acc = withdrawUseCase.withdraw(withdrawCommand);
         var body = AccountResponse.of(acc);
 
         // HTTP 상태 코드를 OK(200)로 통일하고, ApiResponse.success()로 감싸서 반환

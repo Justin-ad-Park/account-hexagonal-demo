@@ -1,3 +1,9 @@
 ### 1. 계좌 생성
-POST http://localhost:8080/accounts?accountNumber=it-001&name=Bob&balance=1000
+POST http://localhost:8080/accounts
 Content-Type: application/json
+
+{
+  "accountNumber": "it-001",
+  "name": "Bob",
+  "balance": 1000
+}

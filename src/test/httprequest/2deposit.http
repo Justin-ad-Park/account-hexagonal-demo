@@ -1,3 +1,7 @@
 ### 2. 입금
-POST http://localhost:8080/accounts/it-001/deposit?amount=500
+POST http://localhost:8080/accounts/it-001/deposit
 Content-Type: application/json
+
+{
+  "amount": 500
+}
