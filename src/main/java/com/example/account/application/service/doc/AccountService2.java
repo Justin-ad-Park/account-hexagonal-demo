@@ -1,15 +1,4 @@
-package com.example.account.application.service;
-
-import com.example.account.application.port.in.CreateAccountUseCase;
-import com.example.account.application.port.in.DepositUseCase;
-import com.example.account.application.port.in.WithdrawUseCase;
-import com.example.account.application.port.out.LoadAccountPort;
-import com.example.account.application.port.out.SaveAccountPort;
-import com.example.account.domain.model.Account;
-import com.example.account.domain.model.AccountCommands;
-import com.example.account.domain.model.Amount;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+package com.example.account.application.service.doc;
 
 /**
  * [ver02 변경사항]

@@ -1,12 +1,4 @@
-package com.example.account.application.service;
-
-import com.example.account.application.port.in.CreateAccountUseCase;
-import com.example.account.application.port.in.DepositUseCase;
-import com.example.account.application.port.in.WithdrawUseCase;
-import com.example.account.application.port.out.LoadAccountPort;
-import com.example.account.application.port.out.SaveAccountPort;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+package com.example.account.application.service.doc;
 
 /*
     AccountService에 @Service 어노테이션을 붙이면 부모클래스에 @Config 어노테이션이 붙어 있어

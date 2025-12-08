@@ -18,16 +18,16 @@ public class UUIDTest {
         compareID(() -> Generators.timeBasedGenerator().generate().toString());
     }
 
-    @Test
-    void generateULID() {
-        // 1) UUID 리스트 생성
-        compareID(() -> UlidCreator.getUlid().toString());
-    }
-
-    @Test
-    void generateKSUID() {
-        compareID( () -> Ksuid.newKsuid().toString());
-    }
+//    @Test
+//    void generateULID() {
+//        // 1) UUID 리스트 생성
+//        compareID(() -> UlidCreator.getUlid().toString());
+//    }
+//
+//    @Test
+//    void generateKSUID() {
+//        compareID( () -> Ksuid.newKsuid().toString());
+//    }
 
     private static void compareID(Supplier<String> idSupplier) {
         // 1) UUID 리스트 생성

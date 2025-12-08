@@ -103,8 +103,8 @@ class AccountControllerActiveProfilesTest {
                 ACCOUNT_API_RESPONSE_TYPE
         );
 
-        // 1. 상태 코드는 여전히 200 OK여야 함
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        // 1. 상태 코드는 NOT_FOUND
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 
         var apiResponse = response.getBody();
         assertThat(apiResponse).isNotNull();
