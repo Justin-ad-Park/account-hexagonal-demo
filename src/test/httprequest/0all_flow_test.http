@@ -2,13 +2,29 @@
 POST http://localhost:8080/accounts?accountNumber=it-001&name=Bob&balance=1000
 Content-Type: application/json
 
+{
+  "accountNumber": "it-001",
+  "name": "Bob",
+  "balance": 1000
+}
+
+
 ### 2. 입금
 POST http://localhost:8080/accounts/it-001/deposit?amount=500
 Content-Type: application/json
 
+{
+  "amount": 500
+}
+
+
 ### 3. 출금
 POST http://localhost:8080/accounts/it-001/withdraw?amount=300
 Content-Type: application/json
+
+{
+  "amount": 300
+}
 
 ### 4. 계좌조회
 GET http://localhost:8080/accounts/it-001

@@ -5,6 +5,13 @@ build/
 data/
 !gradle/wrapper/gradle-wrapper.jar
 
+# Gradle Wrapper
+**/gradle/wrapper/gradle-wrapper.jar
+**/gradle/wrapper/gradle-wrapper.properties
+gradlew
+gradlew.bat
+
+
 ### STS ###
 .apt_generated
 .classpath
