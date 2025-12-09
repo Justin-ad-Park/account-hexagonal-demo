@@ -137,6 +137,18 @@ public class ArchitectureTest {
             classes().that().haveSimpleNameEndingWith("Service")
                     .should().resideInAPackage(APP_SERVICE);
 
+    /**
+     * service 패키지에서 config, Adapter에 의존하는 것을 방지
+     */
+    @ArchTest
+    static final ArchRule application_services_should_not_depend_on_adapters_or_config =
+            noClasses()
+                    .that().resideInAPackage(APP_SERVICE)
+                    .should().dependOnClassesThat().resideInAnyPackage(
+                            ADAPTER,
+                            CONFIG
+                    );
+
 
     /**
      * 9) 프로덕션 클래스만 로드(테스트/외부 라이브러리 제외)
@@ -157,7 +169,36 @@ public class ArchitectureTest {
 
 
     /**
-     * 10) Adapter in의 Request DTO: domain 의존 금지
+     * 10) Adapter in과 out이 서로 참조하는 것을 방지
+     */
+    @ArchTest
+    static final ArchRule inbound_adapters_should_not_depend_on_outbound_adapters =
+            noClasses()
+                    .that().resideInAPackage(ADAPTER_IN)
+                    .should().dependOnClassesThat().resideInAPackage(ADAPTER_OUT);
+
+    @ArchTest
+    static final ArchRule outbound_adapters_should_not_depend_on_inbound_adapters =
+            noClasses()
+                    .that().resideInAPackage(ADAPTER_OUT)
+                    .should().dependOnClassesThat().resideInAPackage(ADAPTER_IN);
+
+    /**
+     * ADAPTER_OUT 아래 Adapter 구현체는 반드시 application.port.out 인터페이스의 구현체가 되도록 강제
+     */
+    @ArchTest
+    static final ArchRule outbound_adapters_should_implement_out_ports =
+            classes()
+                    .that().resideInAPackage(ADAPTER_OUT)
+                    .and().areNotInterfaces()
+                    .and().areNotAnnotatedWith(Configuration.class)
+                    .and().areNotAnnotatedWith(Mapper.class)
+                    .and().haveSimpleNameEndingWith("Adapter")   // ✅ 진짜 Adapter 클래스만
+                    .should().implement(resideInAnyPackage(APP_PORT_OUT));
+
+
+    /**
+     * Adapter in의 Request DTO: domain 의존 금지
      */
     @ArchTest
     static final ArchRule request_dto_should_not_depend_on_domain =
@@ -175,5 +216,20 @@ public class ArchitectureTest {
                     .that().resideInAPackage(ADAPTER_IN)
                     .and(not(resideInAnyPackage(ADAPTER_IN_RESPONSE))) // response만 예외
                     .should().dependOnClassesThat().resideInAPackage(DOMAIN_MODEL);
+
+
+    /**
+     * port 인터페이스가 실수로 Spring/JPA/adapter/config 에 의존하는 것을 방지
+     */
+    @ArchTest
+    static final ArchRule ports_should_not_depend_on_framework_or_adapters =
+            noClasses()
+                    .that().resideInAPackage(APP_PORT_ALL)
+                    .should().dependOnClassesThat().resideInAnyPackage(
+                            SPRING,    // org.springframework..
+                            JPA,       // jakarta.persistence..
+                            ADAPTER,   // ..adapter..
+                            CONFIG     // ..config..
+                    );
 }
 
